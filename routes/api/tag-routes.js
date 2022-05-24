@@ -23,13 +23,18 @@ router.get('/:id', (req, res) => {
   // find a single tag by its `id`
   // be sure to include its associated Product data
   Tag.findOne({
-    include: {
-      model: Product,
-      attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
-    },
     where: {
       id: req.params.id
     },
+    include: [
+      {
+        model: Product,
+        attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
+        order: [['id', 'ASC']],
+        through: ProductTag,
+        as: 'products'
+      }
+    ]
   })
     .then(dbProductData => {
       if (!dbProductData) {
