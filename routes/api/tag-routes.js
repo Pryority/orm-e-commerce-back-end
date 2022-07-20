@@ -29,12 +29,11 @@ router.get('/:id', (req, res) => {
     include: [
       {
         model: Product,
-        attributes: ['id', 'product_name', 'price', 'stock', 'category_id'],
-        order: [['id', 'ASC']],
+        attributes: ["id", "product_name", "price", "stock", "category_id"],
         through: ProductTag,
-        as: 'products'
-      }
-    ]
+        as: "products",
+      },
+    ],
   })
     .then(dbProductData => {
       if (!dbProductData) {
