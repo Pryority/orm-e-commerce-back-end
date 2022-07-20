@@ -7,10 +7,10 @@ router.get('/', (req, res) => {
   // find all tags
   // be sure to include its associated Product data
   Tag.findAll({
-    // include: {
-    //   model: Product,
-    //   attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
-    // },
+    include: {
+      model: Product,
+      attributes: ['id', 'product_name', 'price', 'stock', 'category_id']
+    },
   })
     .then(dbTagData => res.json(dbTagData))
     .catch(err => {
@@ -19,12 +19,11 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/:id', (req, res) => {
-  // find a single tag by its `id`
-  // be sure to include its associated Product data
+// find a single tag by its `id`
+router.get("/:id", (req, res) => {
   Tag.findOne({
     where: {
-      id: req.params.id
+      id: req.params.id,
     },
     include: [
       {
@@ -35,14 +34,14 @@ router.get('/:id', (req, res) => {
       },
     ],
   })
-    .then(dbProductData => {
-      if (!dbProductData) {
-        res.status(404).json({ message: 'No product found with this id' });
+    .then((dbTagData) => {
+      if (!dbTagData) {
+        res.status(404).json({ message: "No tags found with this id." });
         return;
       }
-      res.json(dbProductData);
+      res.json(dbTagData);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       res.status(500).json(err);
     });
