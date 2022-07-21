@@ -77,21 +77,20 @@ router.put('/:id', (req, res) => {
     });
 });
 
-router.delete('/:id', (req, res) => {
-  // delete a category by its `id` value
+router.delete("/:id", (req, res) => {
   Category.destroy({
     where: {
-      id: req.params.id
-    }
+      id: req.params.id,
+    },
   })
-    .then(dbCategoryData => {
+    .then((dbCategoryData) => {
       if (!dbCategoryData) {
-        res.status(404).json({ message: 'No category found with this id' });
+        res.status(404).json({ message: "No category found with this id." });
         return;
       }
       res.json(dbCategoryData);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log(err);
       res.status(500).json(err);
     });
